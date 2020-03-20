@@ -5,9 +5,11 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
 import android.view.View
+import android.webkit.URLUtil
 import androidx.appcompat.app.AppCompatActivity
 import com.example.coronafakedetector.R
 import com.example.coronafakedetector.Util
+import com.example.coronafakedetector.model.Check
 import com.example.coronafakedetector.model.Repository
 import com.example.coronafakedetector.model.RepositoryImpl
 import com.example.coronafakedetector.network.NetworkImpl
@@ -52,20 +54,13 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         intent.getStringExtra(Intent.EXTRA_TEXT)?.let { text ->
             // Update UI to reflect text being shared
             showText(text)
-            checkText(text)
-        }
-    }
+            if (URLUtil.isValidUrl(text)) { // url
 
-    private fun checkText(text: String) {
-        launch {
-            repository.checkText(text)
+                checkUrl(text)
+            } else { // text
+                checkText(text)
+            }
         }
-    }
-
-    private fun showText(text: String) {
-        textView.text = text
-        imageView.visibility = View.GONE
-        textView.visibility = View.VISIBLE
     }
 
     private fun handleSendImage(intent: Intent) {
@@ -76,16 +71,38 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         }
     }
 
+    private fun checkText(text: String) {
+        launch {
+            showCheckResult(repository.checkText(text))
+        }
+    }
+
     private fun checkImage(imageUri: Uri) {
         launch {
-            repository.checkImage(Util.encodeToBase64(contentResolver, imageUri))
+            showCheckResult(repository.checkImage(Util.encodeToBase64(contentResolver, imageUri)))
         }
+    }
+
+    private fun checkUrl(url: String) {
+        launch {
+            showCheckResult(repository.checkUrl(url))
+        }
+    }
+
+    private fun showText(text: String) {
+        textView.text = text
+        imageView.visibility = View.GONE
+        textView.visibility = View.VISIBLE
     }
 
     private fun showImage(imageUri: Uri) {
         imageView.setImageURI(imageUri)
         textView.visibility = View.GONE
         imageView.visibility = View.VISIBLE
+    }
+
+    private fun showCheckResult(check: Check) {
+        showText(check.description)
     }
 
 }
