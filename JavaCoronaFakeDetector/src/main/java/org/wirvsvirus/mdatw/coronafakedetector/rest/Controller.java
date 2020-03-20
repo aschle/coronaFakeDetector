@@ -7,20 +7,21 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api")
 public class Controller {
 
-    @PostMapping("/checkURL")
+    @GetMapping("/checkURL")
     public ResponseEntity<String> checkURL(@RequestParam String URL) {
 
         return ResponseEntity.ok("OK");
     }
 
-    @PostMapping("/checkPhoto")
+    @GetMapping("/checkPhoto")
     public ResponseEntity<String> checkPhoto(@RequestParam String URL) {
 
         return ResponseEntity.ok("OK");
     }
 
-    @GetMapping("/get")
+    @GetMapping("/checkText")
     public ResponseEntity<String> checkText(@RequestBody String text) {
 
-        return ResponseEntity.ok("OK");   }
+        return ResponseEntity.ok("OK");
+    }
 }
