@@ -103,7 +103,3 @@ lint/generated/
 lint/outputs/
 lint/tmp/
 # lint/reports/
-
-# maven
-JavaCoronaFakeDetector/.mvn/*
-JavaCoronaFakeDetector/mvnw*
