@@ -1,2 +1,2 @@
-rootProject.name='AndroidCoronaFakeDetector'
+rootProject.name='CoronaFakeDetector'
 include ':app'

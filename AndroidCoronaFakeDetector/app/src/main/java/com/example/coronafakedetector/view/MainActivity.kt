@@ -9,7 +9,7 @@ import android.webkit.URLUtil
 import androidx.appcompat.app.AppCompatActivity
 import com.example.coronafakedetector.R
 import com.example.coronafakedetector.Util
-import com.example.coronafakedetector.model.Check
+import com.example.coronafakedetector.model.data.Check
 import com.example.coronafakedetector.model.Repository
 import com.example.coronafakedetector.model.RepositoryImpl
 import com.example.coronafakedetector.network.NetworkImpl
@@ -45,17 +45,17 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             }
             else -> {
                 // Handle other intents, such as being started from the home screen
-                // access when normal started
             }
         }
     }
+
+    // handle intents
 
     private fun handleSendText(intent: Intent) {
         intent.getStringExtra(Intent.EXTRA_TEXT)?.let { text ->
             // Update UI to reflect text being shared
             showText(text)
             if (URLUtil.isValidUrl(text)) { // url
-
                 checkUrl(text)
             } else { // text
                 checkText(text)
@@ -70,6 +70,8 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             checkImage(imageUri)
         }
     }
+
+    // call repository
 
     private fun checkText(text: String) {
         launch {
@@ -89,6 +91,8 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         }
     }
 
+    // UI output
+
     private fun showText(text: String) {
         textView.text = text
         imageView.visibility = View.GONE
@@ -101,8 +105,12 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         imageView.visibility = View.VISIBLE
     }
 
-    private fun showCheckResult(check: Check) {
-        showText(check.description)
+    private fun showCheckResult(check: Check?) {
+        if (check == null) {
+            showText(getString(R.string.error))
+        } else {
+            showText(check.response.fakeProbability.toString())
+        }
     }
 
 }

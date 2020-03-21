@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Corona Fake Detector</string>
     <string name="shared_image">Shared Image</string>
+    <string name="error">Error! :(</string>
 </resources>
