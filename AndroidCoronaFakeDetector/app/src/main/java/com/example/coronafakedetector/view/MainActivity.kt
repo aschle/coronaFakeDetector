@@ -9,7 +9,7 @@ import android.webkit.URLUtil
 import androidx.appcompat.app.AppCompatActivity
 import com.example.coronafakedetector.R
 import com.example.coronafakedetector.Util
-import com.example.coronafakedetector.model.Check
+import com.example.coronafakedetector.model.data.Check
 import com.example.coronafakedetector.model.Repository
 import com.example.coronafakedetector.model.RepositoryImpl
 import com.example.coronafakedetector.network.NetworkImpl
@@ -27,6 +27,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     private lateinit var job: Job
     override val coroutineContext: CoroutineContext
         get() = job + Dispatchers.Main
+    private var sentIntent: Intent? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,41 +36,38 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
 
         setContentView(R.layout.activity_main)
 
+        checkButton.setOnClickListener {
+            checkIntent()
+        }
+
         when (intent?.action) {
             Intent.ACTION_SEND -> {
-                if ("text/plain" == intent.type) {
-                    handleSendText(intent) // Handle text being sent
-                } else if (intent.type?.startsWith("image/") == true) {
-                    handleSendImage(intent) // Handle single image being sent
-                }
+                sentIntent = intent
+                showIntent()
             }
             else -> {
                 // Handle other intents, such as being started from the home screen
-                // access when normal started
             }
         }
     }
 
-    private fun handleSendText(intent: Intent) {
-        intent.getStringExtra(Intent.EXTRA_TEXT)?.let { text ->
-            // Update UI to reflect text being shared
-            showText(text)
-            if (URLUtil.isValidUrl(text)) { // url
-
-                checkUrl(text)
-            } else { // text
-                checkText(text)
+    private fun checkIntent() {
+        if ("text/plain" == sentIntent?.type) {
+            sentIntent?.getStringExtra(Intent.EXTRA_TEXT)?.let { text ->
+                if (URLUtil.isValidUrl(text)) { // url
+                    checkUrl(text)
+                } else { // text
+                    checkText(text)
+                }
+            }
+        } else if (sentIntent?.type?.startsWith("image/") == true) {
+            (sentIntent?.getParcelableExtra<Parcelable>(Intent.EXTRA_STREAM) as? Uri)?.let { imageUri ->
+                checkImage(imageUri)
             }
         }
     }
 
-    private fun handleSendImage(intent: Intent) {
-        (intent.getParcelableExtra<Parcelable>(Intent.EXTRA_STREAM) as? Uri)?.let { imageUri ->
-            // Update UI to reflect imageUri being shared
-            showImage(imageUri)
-            checkImage(imageUri)
-        }
-    }
+    // call repository
 
     private fun checkText(text: String) {
         launch {
@@ -89,6 +87,20 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         }
     }
 
+    // UI output
+
+    private fun showIntent() {
+        if ("text/plain" == sentIntent?.type) {
+            sentIntent?.getStringExtra(Intent.EXTRA_TEXT)?.let { text ->
+                showText(text)
+            }
+        } else if (sentIntent?.type?.startsWith("image/") == true) {
+            (sentIntent?.getParcelableExtra<Parcelable>(Intent.EXTRA_STREAM) as? Uri)?.let { imageUri ->
+                showImage(imageUri)
+            }
+        }
+    }
+
     private fun showText(text: String) {
         textView.text = text
         imageView.visibility = View.GONE
@@ -101,8 +113,12 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         imageView.visibility = View.VISIBLE
     }
 
-    private fun showCheckResult(check: Check) {
-        showText(check.description)
+    private fun showCheckResult(check: Check?) {
+        if (check == null) {
+            showText(getString(R.string.error))
+        } else {
+            showText(check.response.fakeProbability.toString())
+        }
     }
 
 }
