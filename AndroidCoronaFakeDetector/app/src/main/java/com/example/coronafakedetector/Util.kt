@@ -16,7 +16,7 @@ object Util {
         val byteArrayOutputStream = ByteArrayOutputStream()
         imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
         val byteArray = byteArrayOutputStream.toByteArray()
-        return Base64.encodeToString(byteArray, Base64.URL_SAFE)
+        return Base64.encodeToString(byteArray, Base64.NO_WRAP)
     }
 
 }

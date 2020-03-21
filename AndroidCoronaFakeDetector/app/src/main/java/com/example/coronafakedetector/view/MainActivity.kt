@@ -10,18 +10,15 @@ import android.webkit.URLUtil
 import androidx.appcompat.app.AppCompatActivity
 import com.example.coronafakedetector.R
 import com.example.coronafakedetector.Util
-import com.example.coronafakedetector.model.data.Check
 import com.example.coronafakedetector.model.Repository
 import com.example.coronafakedetector.model.RepositoryImpl
-import com.example.coronafakedetector.model.data.Parent
-import com.example.coronafakedetector.model.data.Response
+import com.example.coronafakedetector.model.data.Check
 import com.example.coronafakedetector.network.NetworkImpl
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import java.time.LocalDateTime
 import kotlin.coroutines.CoroutineContext
 
 
@@ -142,7 +139,8 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
 
     private fun showProbability(probability: Double) {
         textViewProbability.visibility = View.VISIBLE
-        textViewProbability.text = getString(R.string.fake_probability).format(probability.toString())
+        textViewProbability.text =
+            getString(R.string.fake_probability).format(probability.toString())
         when {
             probability > 66.0 -> {
                 textViewProbability.setTextColor(Color.RED)

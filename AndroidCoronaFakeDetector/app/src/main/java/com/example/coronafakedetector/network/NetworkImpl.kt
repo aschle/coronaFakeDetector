@@ -12,8 +12,8 @@ import kotlin.coroutines.suspendCoroutine
 
 class NetworkImpl(private val context: Context) : Network {
 
-    private val serverUrl = "https://coronafakedetector.herokuapp.com/api/"
     //private val serverUrl = "localhost:8080/"
+    private val serverUrl = "https://coronafakedetector.herokuapp.com/api/"
     private val checkTextUrl = serverUrl + "checkText"
     private val checkImageUrl = serverUrl + "checkPhoto"
     private val checkUrlUrl = serverUrl + "checkURL?URL=%s"
@@ -23,7 +23,7 @@ class NetworkImpl(private val context: Context) : Network {
     }
 
     override suspend fun checkImage(imageBase64: String): JSONObject? {
-        return check(checkImageUrl, JSONObject().put("photo", imageBase64))
+        return check(checkImageUrl, JSONObject().put("photo", "imageBase64"))
     }
 
     override suspend fun checkUrl(url: String): JSONObject? {
@@ -40,6 +40,7 @@ class NetworkImpl(private val context: Context) : Network {
                 Response.Listener { response ->
                     continuation.resume(response)
                 },
+
                 Response.ErrorListener { error ->
                     val message =
                         if (error.localizedMessage != null) error.localizedMessage else error.toString()
@@ -47,7 +48,6 @@ class NetworkImpl(private val context: Context) : Network {
                     continuation.resume(null)
                 }
             )
-
             // Add the request to the RequestQueue.
             queue.add(jsonObjectRequest)
         }
