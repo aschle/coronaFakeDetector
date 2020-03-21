@@ -1,56 +1,88 @@
 package org.wirvsvirus.mdatw.coronafakedetector.rest;
 
 import com.google.common.hash.Hashing;
-import org.springframework.http.HttpStatus;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.wirvsvirus.mdatw.coronafakedetector.articles.Article;
 import org.wirvsvirus.mdatw.coronafakedetector.websites.Website;
+import org.wirvsvirus.mdatw.coronafakedetector.websites.WebsiteService;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+
 
 @RestController
 @RequestMapping("/api")
 public class Controller {
 
+    @Autowired
+    WebsiteService websiteService;
+
+    Logger logger = LoggerFactory.getLogger(Controller.class);
+
     @GetMapping("/checkURL")
     public ResponseEntity<RestResponse> checkURL(@RequestParam String URL) {
-        RestResponse response = new RestResponse();
-        Article article = new Article();
-        article.setAuthor("Some Author");
-        article.setFakeProbability(68);
 
-        Website website = new Website();
-        website.setURL("example.com");
-        article.setParent(website);
 
-        response.setResponse(article);
+        String hostname;
+        URL url;
+        try {
+            url = new URL(URL);
+            hostname = url.getHost();
 
-        return ResponseEntity.ok(response);
+        } catch (MalformedURLException e) {
+            try {
+                url = new URL("https://"+URL);
+                hostname = url.getHost();
+            } catch (MalformedURLException ex) {
+                return ResponseEntity.badRequest().body(new RestResponse("ERROR: Malformed URL: " + ex.getMessage()));
+            }
+            return ResponseEntity.badRequest().body(new RestResponse("ERROR: Malformed URL: " + e.getMessage()));
+        }
+
+
+        Website website;
+
+        if (websiteService.alreadySeenWebsite(hostname)){
+            website = websiteService.findByURL(hostname);
+        }
+        else {
+            website = new Website(hostname);
+            websiteService.insert(website);
+        }
+
+
+        return ResponseEntity.ok(new RestResponse(website));
     }
 
     @GetMapping("/checkPhoto")
-    public ResponseEntity<String> checkPhoto(@RequestParam MultipartFile photo) {
-        String fileName = "default";
-        try {
-            fileName = Hashing.sha256().hashBytes(photo.getBytes()).toString();
-        }
-        catch (IOException e) {
-            return ResponseEntity.badRequest().body("Photo could not be processed.");
-        }
+    public ResponseEntity<RestResponse> checkPhoto(@RequestBody JsonRequest request, HttpServletRequest httpServletRequest) {
+
+        logger.warn(httpServletRequest.getHeader("Content-Type"));
 
 
+        String base64 = (String)request.getPhoto();
+        String hash = Hashing.sha256().hashBytes(base64.getBytes()).toString();;
 
-        return ResponseEntity.ok(fileName);
+        return ResponseEntity.ok(new RestResponse(hash));
     }
 
     @GetMapping("/checkText")
-    public ResponseEntity<String> checkText(@RequestBody String text) {
+    public ResponseEntity<RestResponse> checkText(@RequestBody JsonRequest request, HttpServletRequest httpServletRequest) {
 
-        return ResponseEntity.ok("OK");
+        logger.warn(httpServletRequest.getHeader("Content-Type"));
+
+
+        return ResponseEntity.ok(new RestResponse(request.getText()));
     }
 }
