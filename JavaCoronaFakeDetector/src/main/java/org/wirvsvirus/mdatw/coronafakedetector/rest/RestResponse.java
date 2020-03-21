@@ -6,6 +6,10 @@ public class RestResponse {
     LocalDateTime timestamp = LocalDateTime.now();
     Object response;
 
+    public RestResponse(Object response) {
+        this.response = response;
+    }
+
     public LocalDateTime getTimestamp() {
         return timestamp;
     }

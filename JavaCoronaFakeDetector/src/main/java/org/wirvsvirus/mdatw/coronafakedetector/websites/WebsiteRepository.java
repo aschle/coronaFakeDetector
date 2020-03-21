@@ -1,12 +1,10 @@
 package org.wirvsvirus.mdatw.coronafakedetector.websites;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 @Repository
-public interface WebsiteRepository extends CrudRepository<Website, String> {
-    List<Website> findAllByURL(String URL);
-
+public interface WebsiteRepository extends JpaRepository<Website, String> {
+    Website findByURL(String URL);
+    boolean existsWebsiteByURL(String URL);
 }

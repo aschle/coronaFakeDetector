@@ -8,8 +8,41 @@ import java.util.UUID;
 @MappedSuperclass
 public abstract class DomainEntity {
     @Id
-    String ID = UUID.randomUUID().toString();
+    protected String ID = UUID.randomUUID().toString();
 
-    LocalDateTime createdAt = LocalDateTime.now();
-    LocalDateTime lastAccessed;
+    protected LocalDateTime createdAt = LocalDateTime.now();
+    protected LocalDateTime lastAccessed;
+    protected Integer timesChecked;
+
+    public String getID() {
+        return ID;
+    }
+
+    public void setID(String ID) {
+        this.ID = ID;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getLastAccessed() {
+        return lastAccessed;
+    }
+
+    public void setLastAccessed(LocalDateTime lastAccessed) {
+        this.lastAccessed = lastAccessed;
+    }
+
+    public Integer getTimesChecked() {
+        return timesChecked;
+    }
+
+    public void setTimesChecked(Integer timesChecked) {
+        this.timesChecked = timesChecked;
+    }
 }

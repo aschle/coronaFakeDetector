@@ -12,8 +12,7 @@ public class Article extends DomainEntity {
 
     @ManyToOne
     Website parent;
-    int requests;
-    float fakeProbability;
+    double fakeProbability;
 
     public String getAuthor() {
         return author;
@@ -31,19 +30,11 @@ public class Article extends DomainEntity {
         this.parent = parent;
     }
 
-    public int getRequests() {
-        return requests;
-    }
-
-    public void setRequests(int requests) {
-        this.requests = requests;
-    }
-
-    public float getFakeProbability() {
+    public double getFakeProbability() {
         return fakeProbability;
     }
 
-    public void setFakeProbability(float fakeProbability) {
+    public void setFakeProbability(double fakeProbability) {
         this.fakeProbability = fakeProbability;
     }
 }

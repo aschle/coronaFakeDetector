@@ -10,11 +10,15 @@ public class Website extends DomainEntity {
     @Column
     String URL;
 
+    public Website(String URL) {
+        this.URL = URL;
+    }
+
     public String getURL() {
         return URL;
     }
 
-    public void setURL(String URL) {
-        this.URL = URL;
+    public void increaseTimesChecked() {
+        this.timesChecked++;
     }
 }
