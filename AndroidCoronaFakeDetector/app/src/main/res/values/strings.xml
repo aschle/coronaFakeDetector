@@ -2,4 +2,5 @@
     <string name="app_name">Corona Fake Detector</string>
     <string name="shared_image">Shared Image</string>
     <string name="error">Error! :(</string>
+    <string name="check_for_fake">Check for fake</string>
 </resources>

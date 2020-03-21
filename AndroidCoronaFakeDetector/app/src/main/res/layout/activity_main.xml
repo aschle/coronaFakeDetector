@@ -4,21 +4,32 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="@dimen/margin"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     tools:context=".view.MainActivity"
     tools:ignore="UseCompoundDrawables">
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:visibility="gone" />
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:contentDescription="@string/shared_image"
         android:visibility="gone" />
+
+    <Button
+        android:id="@+id/checkButton"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="@dimen/margin"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/check_for_fake" />
+
 
 </LinearLayout>
