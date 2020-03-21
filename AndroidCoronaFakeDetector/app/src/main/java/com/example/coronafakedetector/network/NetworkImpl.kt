@@ -13,6 +13,7 @@ import kotlin.coroutines.suspendCoroutine
 class NetworkImpl(private val context: Context) : Network {
 
     private val serverUrl = "https://coronafakedetector.herokuapp.com/api/"
+    //private val serverUrl = "localhost:8080/"
     private val checkTextUrl = serverUrl + "checkText"
     private val checkImageUrl = serverUrl + "checkPhoto"
     private val checkUrlUrl = serverUrl + "checkURL?URL=%s"
