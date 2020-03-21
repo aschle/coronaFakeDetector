@@ -107,3 +107,5 @@ lint/tmp/
 # maven
 JavaCoronaFakeDetector/.mvn/*
 JavaCoronaFakeDetector/mvnw*
+JavaCoronaFakeDetector/target/
+JavaCoronaFakeDetector/.idea

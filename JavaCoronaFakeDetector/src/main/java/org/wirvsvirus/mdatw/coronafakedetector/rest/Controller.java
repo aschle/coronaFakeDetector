@@ -1,11 +1,15 @@
 package org.wirvsvirus.mdatw.coronafakedetector.rest;
 
+import com.google.common.hash.Hashing;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.wirvsvirus.mdatw.coronafakedetector.articles.Article;
 import org.wirvsvirus.mdatw.coronafakedetector.websites.Website;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,9 +34,18 @@ public class Controller {
     }
 
     @GetMapping("/checkPhoto")
-    public ResponseEntity<String> checkPhoto(@RequestParam String URL) {
+    public ResponseEntity<String> checkPhoto(@RequestParam MultipartFile photo) {
+        String fileName = "default";
+        try {
+            fileName = Hashing.sha256().hashBytes(photo.getBytes()).toString();
+        }
+        catch (IOException e) {
+            return ResponseEntity.badRequest().body("Photo could not be processed.");
+        }
 
-        return ResponseEntity.ok("OK");
+
+
+        return ResponseEntity.ok(fileName);
     }
 
     @GetMapping("/checkText")
