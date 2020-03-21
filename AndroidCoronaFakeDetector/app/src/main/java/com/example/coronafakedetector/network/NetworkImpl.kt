@@ -23,7 +23,7 @@ class NetworkImpl(private val context: Context) : Network {
     }
 
     override suspend fun checkImage(imageBase64: String): JSONObject? {
-        return check(checkImageUrl, JSONObject().put("photo", "imageBase64"))
+        return check(checkImageUrl, JSONObject().put("photo", imageBase64))
     }
 
     override suspend fun checkUrl(url: String): JSONObject? {
