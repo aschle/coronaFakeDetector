@@ -7,6 +7,8 @@ import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import org.json.JSONObject
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
@@ -27,7 +29,7 @@ class NetworkImpl(private val context: Context) : Network {
     }
 
     override suspend fun checkUrl(url: String): JSONObject? {
-        return check(checkUrlUrl.format(url), null)
+        return check(checkUrlUrl.format(URLEncoder.encode(url, StandardCharsets.UTF_8.toString())), null)
     }
 
     // TODO solve json bug
