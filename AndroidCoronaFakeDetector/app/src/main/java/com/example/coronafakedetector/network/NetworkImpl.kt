@@ -30,6 +30,7 @@ class NetworkImpl(private val context: Context) : Network {
         return check(checkUrlUrl.format(url), null)
     }
 
+    // TODO solve json bug
     private suspend fun check(url: String, jsonObject: JSONObject?) =
         suspendCoroutine<JSONObject?> { continuation ->
             // Instantiate the RequestQueue.

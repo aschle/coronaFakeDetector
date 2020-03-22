@@ -13,7 +13,7 @@ import com.example.coronafakedetector.Util
 import com.example.coronafakedetector.model.Repository
 import com.example.coronafakedetector.model.RepositoryImpl
 import com.example.coronafakedetector.model.data.Check
-import com.example.coronafakedetector.network.NetworkImpl
+import com.example.coronafakedetector.network.MockNetwork
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -24,7 +24,7 @@ import kotlin.coroutines.CoroutineContext
 
 class MainActivity : AppCompatActivity(), CoroutineScope {
 
-    private val repository: Repository = RepositoryImpl(NetworkImpl(this))
+    private val repository: Repository = RepositoryImpl(MockNetwork()) // TODO use NetworkImpl
     private lateinit var job: Job
     override val coroutineContext: CoroutineContext
         get() = job + Dispatchers.Main
