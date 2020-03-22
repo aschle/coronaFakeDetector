@@ -11,8 +11,8 @@ public abstract class DomainEntity {
     protected String ID = UUID.randomUUID().toString();
 
     protected LocalDateTime createdAt = LocalDateTime.now();
-    protected LocalDateTime lastAccessed;
-    protected Integer timesChecked;
+    protected LocalDateTime lastAccessed = LocalDateTime.now();
+    protected int timesChecked = 1;
 
     public String getID() {
         return ID;
@@ -38,11 +38,11 @@ public abstract class DomainEntity {
         this.lastAccessed = lastAccessed;
     }
 
-    public Integer getTimesChecked() {
+    public int getTimesChecked() {
         return timesChecked;
     }
 
-    public void setTimesChecked(Integer timesChecked) {
-        this.timesChecked = timesChecked;
+    public void increaseTimesChecked() {
+        this.timesChecked++;
     }
 }

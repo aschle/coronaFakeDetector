@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -25,6 +26,7 @@ public class WebsiteService {
         if (repository.existsWebsiteByURL(URL)) {
             Website website = repository.findByURL(URL);
             website.increaseTimesChecked();
+            website.setLastAccessed(LocalDateTime.now());
             repository.save(website);
 
             return true;
@@ -37,6 +39,7 @@ public class WebsiteService {
     }
 
     public void update(Website website) {
+        website.setLastAccessed(LocalDateTime.now());
         repository.save(website);
     }
 

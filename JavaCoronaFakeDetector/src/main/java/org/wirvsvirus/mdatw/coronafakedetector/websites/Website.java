@@ -14,11 +14,10 @@ public class Website extends DomainEntity {
         this.URL = URL;
     }
 
-    public String getURL() {
-        return URL;
+    public Website() {
     }
 
-    public void increaseTimesChecked() {
-        this.timesChecked++;
+    public String getURL() {
+        return URL;
     }
 }

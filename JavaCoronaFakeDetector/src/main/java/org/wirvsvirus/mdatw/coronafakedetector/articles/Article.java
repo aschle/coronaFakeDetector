@@ -13,6 +13,7 @@ public class Article extends DomainEntity {
     @ManyToOne
     Website parent;
     double fakeProbability;
+    String SHA265;
 
     public String getAuthor() {
         return author;
@@ -36,5 +37,13 @@ public class Article extends DomainEntity {
 
     public void setFakeProbability(double fakeProbability) {
         this.fakeProbability = fakeProbability;
+    }
+
+    public String getSHA265() {
+        return SHA265;
+    }
+
+    public void setSHA265(String SHA265) {
+        this.SHA265 = SHA265;
     }
 }
