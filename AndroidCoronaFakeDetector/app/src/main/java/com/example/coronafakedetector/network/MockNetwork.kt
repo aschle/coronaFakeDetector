@@ -1,18 +1,22 @@
 package com.example.coronafakedetector.network
 
+import kotlinx.coroutines.delay
 import org.json.JSONObject
 
 class MockNetwork : Network {
 
     override suspend fun checkText(text: String): JSONObject? {
+        delay(1000L)
         return JSONObject(mockResultGood())
     }
 
     override suspend fun checkImage(imageBase64: String): JSONObject? {
+        delay(2000L)
         return JSONObject(mockResultBad())
     }
 
     override suspend fun checkUrl(url: String): JSONObject? {
+        delay(500L)
         return JSONObject(mockResultBad())
     }
 

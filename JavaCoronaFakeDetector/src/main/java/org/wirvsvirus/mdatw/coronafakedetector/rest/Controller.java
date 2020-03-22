@@ -4,21 +4,14 @@ import com.google.common.hash.Hashing;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import org.wirvsvirus.mdatw.coronafakedetector.articles.Article;
 import org.wirvsvirus.mdatw.coronafakedetector.websites.Website;
 import org.wirvsvirus.mdatw.coronafakedetector.websites.WebsiteService;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
 
 
 @RestController
@@ -42,7 +35,7 @@ public class Controller {
 
         } catch (MalformedURLException e) {
             try {
-                url = new URL("https://"+URL);
+                url = new URL("https://" + URL);
                 hostname = url.getHost();
             } catch (MalformedURLException ex) {
                 return ResponseEntity.badRequest().body(new RestResponse("ERROR: Malformed URL: " + ex.getMessage()));
@@ -53,10 +46,9 @@ public class Controller {
 
         Website website;
 
-        if (websiteService.alreadySeenWebsite(hostname)){
+        if (websiteService.alreadySeenWebsite(hostname)) {
             website = websiteService.findByURL(hostname);
-        }
-        else {
+        } else {
             website = new Website(hostname);
             websiteService.insert(website);
         }
@@ -71,8 +63,9 @@ public class Controller {
         logger.warn(httpServletRequest.getHeader("Content-Type"));
 
 
-        String base64 = (String)request.getPhoto();
-        String hash = Hashing.sha256().hashBytes(base64.getBytes()).toString();;
+        String base64 = (String) request.getPhoto();
+        String hash = Hashing.sha256().hashBytes(base64.getBytes()).toString();
+        ;
 
         return ResponseEntity.ok(new RestResponse(hash));
     }
