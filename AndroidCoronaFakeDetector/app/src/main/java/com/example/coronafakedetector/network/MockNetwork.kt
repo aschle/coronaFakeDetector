@@ -7,7 +7,7 @@ class MockNetwork : Network {
 
     override suspend fun checkText(text: String): JSONObject? {
         delay(1000L)
-        return JSONObject(mockResultGood())
+        return JSONObject(mockResultBad())
     }
 
     override suspend fun checkImage(imageBase64: String): JSONObject? {
@@ -17,7 +17,7 @@ class MockNetwork : Network {
 
     override suspend fun checkUrl(url: String): JSONObject? {
         delay(500L)
-        return JSONObject(mockResultBad())
+        return JSONObject(mockResultGood())
     }
 
     private fun mockResultBad(): String {
